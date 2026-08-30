@@ -1,0 +1,59 @@
+name: Test
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash -l {0}
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Lint xeus-runner
+        run: |
+          npm install
+          npm run lint:check
+
+  build:
+    name: Build and test
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install mamba
+        uses: mamba-org/setup-micromamba@v3
+        with:
+          environment-name: test-env
+          cache-environment: true
+          create-args: >-
+            nodejs=24
+
+      - name: Build
+        run: |
+          npm install
+          npm run build
+
+      - name: Test
+        working-directory: test
+        run: |
+          npm install
+          npm run build
+          npm run test

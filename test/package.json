@@ -1,0 +1,20 @@
+{
+  "name": "xeus-runner-tests",
+  "version": "0.0.1",
+  "description": "xeus-runner tests",
+  "license": "BSD-3-Clause",
+  "author": "Ian Thomas",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run test:unit",
+    "test:unit": "jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^30.5.0",
+    "ts-jest": "^29.4.12",
+    "xeus-runner": "file:.."
+  }
+}

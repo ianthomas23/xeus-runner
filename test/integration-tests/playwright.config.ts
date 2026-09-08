@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from 'playwright-test-coverage-native';
 
 export default defineConfig({
   testDir: './',
@@ -15,7 +15,10 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        coverageDir: './coverage/tmp',
+      },
     },
     {
       name: 'firefox',

@@ -1,4 +1,4 @@
-import { expect } from '@playwright/test';
+import { expect } from './test_utils';
 import { test } from './test_utils';
 
 test.describe('Lua kernel', () => {

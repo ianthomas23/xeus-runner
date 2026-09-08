@@ -5,6 +5,8 @@ tsconfig.tsbuildinfo
 
 test/package-lock.json
 test-results/
+test/integration-tests/coverage/
+test/coverage/
 
 examples/package-lock.json
 examples/tmp

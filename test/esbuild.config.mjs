@@ -4,7 +4,7 @@ const commonOptions = {
   outdir: 'dist',
   bundle: true,
   format: 'esm',
-  sourcemap: false,
+  sourcemap: 'linked',
   minify: false,
   loader: {
     '.wasm': 'file',

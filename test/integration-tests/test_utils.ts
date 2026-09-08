@@ -1,4 +1,4 @@
-import { test as base } from '@playwright/test';
+import { test as base, expect } from 'playwright-test-coverage-native';
 
 // Override page fixture to navigate to specific page.
 export const test = base.extend({
@@ -7,3 +7,5 @@ export const test = base.extend({
     await use(page);
   },
 });
+
+export { expect };

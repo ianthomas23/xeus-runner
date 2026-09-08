@@ -15,15 +15,18 @@
     "serve": "npx static-handler --port 4500 dist/",
     "test": "npm run test:unit && npm run test:integration",
     "test:integration": "cd integration-tests && playwright test --project=chromium",
+    "test:integration:coverage": "cd integration-tests && playwright test --project=chromium && node prepare-coverage.js && c8 --temp-directory coverage/c8 --allowExternal report --reporter=text --reporter=html",
     "test:integration:ui": "cd integration-tests && playwright test --project=chromium --ui",
     "test:unit": "NODE_OPTIONS='--experimental-vm-modules' jest unit-tests/env_lock.test.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.62.1",
     "@types/jest": "^30.0.0",
+    "c8": "^12.0.0",
     "esbuild": "^0.28.2",
     "jest": "^30.5.0",
     "playwright": "^1.62.1",
+    "playwright-test-coverage-native": "^0.3.0",
     "static-handler": "^0.5.3",
     "ts-jest": "^29.4.12",
     "typescript": "^6.0.3",

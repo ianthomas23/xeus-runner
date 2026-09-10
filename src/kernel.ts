@@ -51,7 +51,12 @@ export class XeusKernel implements IXeusKernel {
     if (this._parentElement === undefined) {
       return new TextMessageHandler();
     } else {
-      return new DOMMessageHandler(this._parentElement, this._cssClassPrefix, this._showCode);
+      return new DOMMessageHandler(
+        this._parentElement,
+        this._cssClassPrefix,
+        this._showCode,
+        this._kernelType.language,
+      );
     }
   }
 

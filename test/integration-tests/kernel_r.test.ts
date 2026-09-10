@@ -41,11 +41,11 @@ ggplot(data, aes(x = x, y = y)) +
         });
       }, worker);
 
-      expect(page.locator('#target > #execute-0')).toHaveAttribute('class', 'xr-execute');
+      expect(page.locator('#target > #execute-0')).toHaveClass(/\bxr-execute\b/);
 
       const code = page.locator('#target > #execute-0 > #code-0');
       expect(await code.textContent()).toMatch(/^library\(ggplot2\)/);
-      expect(code).toHaveAttribute('class', 'xr-code');
+      expect(code).toHaveClass(/\bxr-code\b/);
 
       const childImages = page.locator('#target > #execute-0 > div.xr-image > *');
       expect(childImages).toHaveCount(1);

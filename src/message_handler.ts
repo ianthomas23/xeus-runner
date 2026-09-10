@@ -1,3 +1,5 @@
+import { PromiseDelegate } from '@lumino/coreutils';
+import { CodeMirrorNs } from './code_mirror';
 import type { IXeusKernel } from './defs';
 
 /**
@@ -22,7 +24,10 @@ export class DOMMessageHandler implements IMessageHandler {
     readonly parentElement: Element,
     readonly cssClassPrefix: string,
     readonly showCode: boolean,
-  ) {}
+    readonly language: string,
+  ) {
+    this._wantCodeMirror = true;
+  }
 
   code(requestId: string, code: string) {
     if (code.length > 0) {
@@ -32,6 +37,18 @@ export class DOMMessageHandler implements IMessageHandler {
         `code-${requestId}`,
       );
       div.textContent += code;
+
+      if (this._wantCodeMirror && CodeMirrorNs.supportsLanguage(this.language)) {
+        if (!this._codeMirrorInitialising) {
+          CodeMirrorNs.init(this.language).then(() => {
+            this._codeMirrorInitialising = false;
+            this._initCodeMirrorDelegate.resolve();
+          });
+        }
+        this._initCodeMirrorDelegate.promise.then(() =>
+          CodeMirrorNs.applyToDiv(div, this.language),
+        );
+      }
     }
   }
 
@@ -110,6 +127,10 @@ export class DOMMessageHandler implements IMessageHandler {
     const id = `execute-${requestId}`;
     return this._getOrCreateDiv(this.parentElement, `${this.cssClassPrefix}-execute`, id);
   }
+
+  private _wantCodeMirror: boolean;
+  private _codeMirrorInitialising = false;
+  private _initCodeMirrorDelegate = new PromiseDelegate<void>();
 }
 /**
  * Handles text-only messages from the kernel, returning then via `toExecuteReturn`.

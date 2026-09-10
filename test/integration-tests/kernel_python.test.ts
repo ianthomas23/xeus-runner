@@ -20,6 +20,7 @@ test.describe('Python kernel', () => {
     });
 
     test(`creates images, worker: ${worker}`, async ({ page }) => {
+      // Matplotlib and IPython.display images.
       await page.evaluate(async (worker) => {
         const kernel = new (globalThis as any).XeusKernel({
           type: 'python',
@@ -41,12 +42,11 @@ display.Image(filename='/share/jupyter/kernels/xpython/logo-64x64.png')`,
       }, worker);
 
       // First execute.
-      await page.waitForTimeout(2000);
-      //expect(page.locator('#target > #execute-0')).toHaveAttribute('class', 'xr-execute');
+      expect(page.locator('#target > #execute-0')).toHaveClass(/\bxr-execute\b/);
 
       const code0 = page.locator('#target > #execute-0 > #code-0');
       expect(await code0.textContent()).toMatch(/^import matplotlib\.pyplot as plt/);
-      expect(code0).toHaveAttribute('class', 'xr-code');
+      expect(code0).toHaveClass(/\bxr-code\b/);
 
       // Matplotlib image.
       const childImages0 = page.locator('#target > #execute-0 > div.xr-image > *');
@@ -54,11 +54,11 @@ display.Image(filename='/share/jupyter/kernels/xpython/logo-64x64.png')`,
       expect(await childImages0.nth(0).getAttribute('src')).toMatch(/^data:image\/png;base64,/);
 
       // Second execute.
-      expect(page.locator('#target > #execute-1')).toHaveAttribute('class', 'xr-execute');
+      expect(page.locator('#target > #execute-1')).toHaveClass(/\bxr-execute\b/);
 
       const code1 = page.locator('#target > #execute-1 > #code-1');
       expect(await code1.textContent()).toMatch(/^from IPython import display/);
-      expect(code1).toHaveAttribute('class', 'xr-code');
+      expect(code1).toHaveClass(/\bxr-code\b/);
 
       // IPython image.
       const childImages1 = page.locator('#target > #execute-1 > div.xr-image > *');
@@ -67,6 +67,7 @@ display.Image(filename='/share/jupyter/kernels/xpython/logo-64x64.png')`,
     });
 
     test(`creates html and javascript, worker: ${worker}`, async ({ page }) => {
+      // Bokeh plot.
       await page.evaluate(async (worker) => {
         const kernel = new (globalThis as any).XeusKernel({
           type: 'python',
@@ -114,11 +115,11 @@ show(layout)
       await page.locator('#target > #execute-1 > div.xr-html > *').waitFor();
 
       // First execute.
-      expect(page.locator('#target > #execute-0')).toHaveAttribute('class', 'xr-execute');
+      expect(page.locator('#target > #execute-0')).toHaveClass(/\bxr-execute\b/);
 
       const code0 = page.locator('#target > #execute-0 > #code-0');
       expect(await code0.textContent()).toMatch(/^from bokeh.io import output_notebook/);
-      expect(code0).toHaveAttribute('class', 'xr-code');
+      expect(code0).toHaveClass(/\bxr-code\b/);
 
       // Bokeh logo image and text.
       const logo = page.locator('#target > #execute-0 > div.xr-html > div');
@@ -126,11 +127,11 @@ show(layout)
       expect(logo.locator('> span')).toHaveText(/^BokehJS .* successfully loaded.$/);
 
       // Second execute.
-      expect(page.locator('#target > #execute-1')).toHaveAttribute('class', 'xr-execute');
+      expect(page.locator('#target > #execute-1')).toHaveClass(/\bxr-execute\b/);
 
       const code1 = page.locator('#target > #execute-1 > #code-1');
       expect(await code1.textContent()).toMatch(/^from bokeh.layouts import layout/);
-      expect(code1).toHaveAttribute('class', 'xr-code');
+      expect(code1).toHaveClass(/\bxr-code\b/);
 
       // Bokeh plot.
       const children = page.locator('#target > #execute-1 > div.xr-html > *');

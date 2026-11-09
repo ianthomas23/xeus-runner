@@ -1,0 +1,25 @@
+{
+  "name": "xeus-runner-docs",
+  "private": true,
+  "scripts": {
+    "copy-examples": "rm -rf static/examples && mkdir -p static && cp -R ../examples/dist_web static/examples",
+    "prestart": "npm run copy-examples",
+    "prebuild": "npm run copy-examples",
+    "start": "docusaurus start",
+    "build": "docusaurus build",
+    "serve": "docusaurus serve",
+    "clear": "docusaurus clear"
+  },
+  "dependencies": {
+    "@docusaurus/core": "^3.9.2",
+    "@docusaurus/preset-classic": "^3.9.2",
+    "@mdx-js/react": "^3.1.0",
+    "docusaurus-plugin-typedoc": "^1.4.0",
+    "prism-react-renderer": "^2.4.1",
+    "raw-loader": "^4.0.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typedoc": "^0.28.20",
+    "typedoc-plugin-markdown": "^4.8.0"
+  }
+}

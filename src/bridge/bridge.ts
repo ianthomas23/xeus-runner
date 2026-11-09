@@ -7,6 +7,8 @@ import type { ILogger } from '../logger';
  * Bridge from XeusKernel to kernel implementation (impl), encapsulating communication between the
  * two.  If the kernel impl is in the main thread then communication is via simple function calls,
  * if it is in a web worker it is via message handling.
+ *
+ * @category Customisation
  */
 export interface IBridge {
   /**

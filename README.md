@@ -122,6 +122,11 @@ npm run test
 
 To build the documentation:
 
+
+
+needs lib and examples built first.....
+
+
 ```bash
 cd docs
 micromamba create -f docs-environment

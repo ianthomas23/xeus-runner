@@ -9,6 +9,8 @@ import { WebWorkerBridge } from './web_worker_bridge';
 
 /**
  * Bridge to kernel implementation in web worker using coincident for communication between threads.
+ *
+ * @category Customisation
  */
 export class CoincidentWebWorkerBridge extends WebWorkerBridge {
   protected createWorker(_options: IXeusKernelImplOptions): Worker {

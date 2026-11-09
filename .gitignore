@@ -4,6 +4,13 @@ lib/
 node_modules/
 tsconfig.tsbuildinfo
 
+docs/.docusaurus/
+docs/build/
+docs/docs/api/
+docs/node_modules/
+docs/package-lock.json
+docs/static/examples/
+
 examples/package-lock.json
 examples/tmp_node
 examples/tmp_web

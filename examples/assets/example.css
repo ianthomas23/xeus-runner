@@ -33,3 +33,23 @@ body {
   margin: 0.5em;
   white-space: pre;
 }
+
+[data-theme='dark'] body {
+  background-color: #1b1b1d;
+  color: #e3e3e3;
+}
+
+[data-theme='dark'] .xr-code {
+  border-color: darkgoldenrod;
+  background-color: #2b2a1e;
+}
+
+[data-theme='dark'] .xr-stdout {
+  border-color: #555;
+  background-color: #2a2a2a;
+}
+
+[data-theme='dark'] .xr-stderr {
+  border-color: #c33;
+  background-color: #4a1f1f;
+}

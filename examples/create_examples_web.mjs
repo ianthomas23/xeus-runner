@@ -98,6 +98,7 @@ for (const file of tsFiles) {
       .replace(workerRegex, `$1worker: ${workerType === 'worker'}`)
       .replaceAll('{{ workerName }}', workerNames[workerType]);
     writeFileSync(tsFilename, ts);
+    writeFileSync(join(distDir, `${nameWorker}.ts`), ts.replace(/^\/\/\s+:\w+:.*\n\n?/gm, ''));
   }
 }
 

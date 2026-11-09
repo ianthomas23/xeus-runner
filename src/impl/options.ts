@@ -3,6 +3,9 @@ import type { IXeusWorkerKernel } from '@jupyterlite/xeus-core';
 import type { IXeusKernel } from '../defs';
 import type { IKernelType } from '../kernel_type';
 
+/**
+ * @category Customisation
+ */
 export interface IXeusKernelImplOptions extends IXeusWorkerKernel.IOptions {
   kernelType: IKernelType;
   envLock?: ILock;

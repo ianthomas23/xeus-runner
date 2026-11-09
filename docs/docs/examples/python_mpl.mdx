@@ -1,0 +1,16 @@
+import ExampleFrame from '@site/src/components/ExampleFrame';
+import CodeBlock from '@theme/CodeBlock';
+import TabItem from '@theme/TabItem';
+import Tabs from '@theme/Tabs';
+import code from '!!raw-loader!../../../examples/dist_web/python_mpl_worker.ts';
+
+# Matplotlib plot as PNG
+
+<Tabs>
+  <TabItem value="source" label="Source" default>
+    <CodeBlock language="ts">{code}</CodeBlock>
+  </TabItem>
+  <TabItem value="output" label="Output">
+    <ExampleFrame src="/examples/python_mpl_worker.html" />
+  </TabItem>
+</Tabs>

@@ -161,6 +161,10 @@ export class XeusKernel implements IXeusKernel {
     return this._isWorker;
   }
 
+  get progress(): ISignal<this, IXeusKernel.IProgress> {
+    return this._progress;
+  }
+
   get ready(): Promise<void> {
     return this._ready.promise;
   }
@@ -169,6 +173,11 @@ export class XeusKernel implements IXeusKernel {
    * Process message received from kernel implementation.
    */
   protected receiveMessage(msg: any) {
+    if (msg?._progress !== undefined) {
+      this._progress.emit(msg._progress);
+      return;
+    }
+
     // Don't like using lastParentMsgId, but _stream messages do not have a parent_header.
     const requestId: string | undefined = msg.parent_header?.msg_id ?? this._latestRequestId;
     this._log(ILogger.Level.Debug, 'processWorkerMessage', msg, requestId);
@@ -326,6 +335,7 @@ export class XeusKernel implements IXeusKernel {
   private _isDisposed = false;
   private _isWorker: boolean;
   private _disposed = new Signal<this, void>(this);
+  private _progress = new Signal<this, IXeusKernel.IProgress>(this);
   private _ready = new PromiseDelegate<void>();
   private _bridge: IBridge;
 

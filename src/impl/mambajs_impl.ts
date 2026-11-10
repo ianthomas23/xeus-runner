@@ -89,6 +89,7 @@ export abstract class MambajsXeusKernelImpl extends XeusRemoteKernelBase {
     if (this._untarjs === undefined) {
       throw new Error('Failed to load untarjs');
     }
+    this._progress('untarjs loaded');
 
     if (envLock !== undefined) {
       this._log(ILogger.Level.Debug, 'using supplied envLock');
@@ -106,6 +107,7 @@ export abstract class MambajsXeusKernelImpl extends XeusRemoteKernelBase {
     }
 
     this._log(ILogger.Level.Debug, 'envLock', this._envLock);
+    this._progress('environment solved');
 
     if (kernelPackageName === 'xeus-python') {
       this._pythonVersion = getPythonVersion(this._envLock);
@@ -130,6 +132,8 @@ export abstract class MambajsXeusKernelImpl extends XeusRemoteKernelBase {
     // Alternatively could identify exactly which are required from the kernel package.
     const soRegex = /[\w-]+\.so(\.\d+)*$/;
 
+    const nPkgs = Object.keys(pkgs).length;
+    let nDownloaded = 0;
     await Promise.all(
       Object.keys(pkgs).map(async (filename) => {
         const pkg = pkgs[filename];
@@ -137,6 +141,7 @@ export abstract class MambajsXeusKernelImpl extends XeusRemoteKernelBase {
         const isKernelBinaryPkg = pkg.name === kernelPackageName || pkg.name === 'xeus-pywrap';
         const pkgUrl = computePackageUrl(pkg, filename, channelInfo);
         const wholePkgData = await fetchByteArray(pkgUrl);
+        this._progress(`${++nDownloaded} of ${nPkgs} packages downloaded`);
         const blob = new Blob([wholePkgData as any], { type: 'application/x-bzip2' });
         this._blobCache.set(filename, blob);
         const pkgData: FilesData = await this._untarjs!.extractData(wholePkgData);
@@ -190,11 +195,13 @@ export abstract class MambajsXeusKernelImpl extends XeusRemoteKernelBase {
     // blobCache is full, so patch fetch to use it.
     this.patchFetch();
 
+    this._progress('loading kernel');
     await super.initialize(options);
 
     // Patched fetch no longer needed, assuming we don't support adding/removing packages whilst the
     // kernel is running.
     this.unpatchFetch();
+    this._progress('kernel ready');
   }
 
   protected async initializeFileSystem(_options: IXeusKernelImplOptions): Promise<void> {
@@ -290,6 +297,11 @@ export abstract class MambajsXeusKernelImpl extends XeusRemoteKernelBase {
     }
   }
 
+  protected _progress(message: string): void {
+    // Sent via the normal message channel to XeusKernel which emits its progress signal.
+    (globalThis as any).postMessage({ _progress: { value: ++this._progressStep, message } });
+  }
+
   protected maybePatchJs(name: string, array: Uint8Array): Uint8Array {
     this._log(ILogger.Level.Debug, 'maybePatch', name);
     // Export extra symbols from kernel JS modules.  Should be upstreamed.
@@ -377,6 +389,7 @@ export abstract class MambajsXeusKernelImpl extends XeusRemoteKernelBase {
   protected _envLock?: ILock;
   protected _installedData?: IInstalledData;
   private _logCallback?: ILogger.ILogCallback;
+  private _progressStep = 0;
   protected _pythonVersion?: number[];
   protected _untarjs?: IUnpackJSAPI;
 }

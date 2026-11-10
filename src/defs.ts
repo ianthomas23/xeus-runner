@@ -40,6 +40,11 @@ export interface IXeusKernel {
   isWorker: boolean;
 
   /**
+   * Signal emitted to report progress of kernel installation.
+   */
+  progress: ISignal<this, IXeusKernel.IProgress>;
+
+  /**
    * Promise that resolves when the kernel is ready to be used.
    */
   ready: Promise<void>;
@@ -146,6 +151,18 @@ export namespace IXeusKernel {
   export interface IExecuteReturn {
     stdout?: string;
     stderr?: string;
+  }
+
+  /**
+   * Progress of kernel installation.
+   */
+  export interface IProgress {
+    /**
+     * Integer step count.
+     */
+    value: number;
+
+    message: string;
   }
 
   export type IOnError = (err: Error) => void;

@@ -1,0 +1,12 @@
+changelog:
+  categories:
+    - title: Enhancements made
+      labels: [enhancement]
+    - title: Bugs fixed
+      labels: [bug]
+    - title: Maintenance and upkeep improvements
+      labels: [maintenance]
+    - title: Documentation improvements
+      labels: [documentation]
+    - title: Other merged PRs
+      labels: ['*']

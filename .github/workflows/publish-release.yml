@@ -45,7 +45,7 @@ jobs:
           if [ -n "$(npm view "$spec" version 2>/dev/null)" ]; then
             echo "$spec is already published on npm, skipping"
           else
-            npm publish dist/*.tgz
+            npm publish ./dist/*.tgz
           fi
 
       - name: Publish GitHub release

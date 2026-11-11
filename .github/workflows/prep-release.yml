@@ -55,8 +55,9 @@ jobs:
       # prepack runs npm install and npm run build.
       - name: Build package
         run: |
+          mkdir dist
           npm pack --pack-destination dist
-          npm publish dist/*.tgz --dry-run
+          npm publish ./dist/*.tgz --dry-run
 
       - name: Create draft release
         env:
